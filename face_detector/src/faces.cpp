@@ -113,7 +113,7 @@ vector<Box2D3D> Faces::detectAllFacesDisparity(const cv::Mat &image, double thre
   else if (image.channels() == 3)
   {
     cv_image_gray_.create(image.size(), CV_8UC1);
-    cv::cvtColor(image, cv_image_gray_, CV_BGR2GRAY);
+    cv::cvtColor(image, cv_image_gray_, cv::COLOR_BGRA2GRAY);
   }
   else
   {
@@ -171,7 +171,7 @@ void Faces::faceDetectionThreadDisparity(uint i)
     int this_min_face_size = (int)(floor(fabs(p2_2.x - p2_1.x)));
 
     std::vector<cv::Rect> faces_vec;
-    cascade_.detectMultiScale(cv_image_gray_, faces_vec,  1.2, 2, CV_HAAR_DO_CANNY_PRUNING, cv::Size(this_min_face_size, this_min_face_size));
+    cascade_.detectMultiScale(cv_image_gray_, faces_vec,  1.2, 2, cv::CASCADE_DO_CANNY_PRUNING, cv::Size(this_min_face_size, this_min_face_size));
 
     // Filter the faces using depth information, if available. Currently checks that the actual face size is within the given limits.
     cv::Scalar color(0, 255, 0);
@@ -196,7 +196,7 @@ void Faces::faceDetectionThreadDisparity(uint i)
       cv::Mat disp_roi = disp_roi_shallow.clone();
       cv::Mat tmat = disp_roi.reshape(1, disp_roi.rows * disp_roi.cols);
       cv::Mat tmat_sorted;
-      cv::sort(tmat, tmat_sorted, CV_SORT_EVERY_COLUMN + CV_SORT_DESCENDING);
+      cv::sort(tmat, tmat_sorted, cv::SORT_EVERY_COLUMN + cv::SORT_DESCENDING);
       avg_disp = tmat_sorted.at<float>(floor(cv::countNonZero(tmat_sorted >= 0.0) / 2.0)); // Get the middle valid disparity (-1 disparities are invalid)
 
       // Fill in the rest of the face data structure.
@@ -280,7 +280,7 @@ vector<Box2D3D> Faces::detectAllFacesDepth(const cv::Mat &image, double threshol
   else if (image.channels() == 3)
   {
     cv_image_gray_.create(image.size(), CV_8UC1);
-    cv::cvtColor(image, cv_image_gray_, CV_BGR2GRAY);
+    cv::cvtColor(image, cv_image_gray_, cv::COLOR_BGRA2GRAY);
   }
   else
   {
@@ -338,7 +338,9 @@ void Faces::faceDetectionThreadDepth(uint i)
     int this_min_face_size = (int)(floor(fabs(p2_2.x - p2_1.x)));
 
     std::vector<cv::Rect> faces_vec;
-    cascade_.detectMultiScale(cv_image_gray_, faces_vec,  1.2, 2, CV_HAAR_DO_CANNY_PRUNING, cv::Size(this_min_face_size, this_min_face_size));
+    /// Following line generates the error message :
+    /// error: no matching function for call to ‘cv::CascadeClassifier::detectMultiScale(...)
+    ///cascade_.detectMultiScale(cv_image_gray_, faces_vec,  1.2, 2, cv::Size(this_min_face_size, this_min_face_size)); // Could not find a fix
 
     // Filter the faces using depth information, if available. Currently checks that the actual face size is within the given limits.
     cv::Scalar color(0, 255, 0);

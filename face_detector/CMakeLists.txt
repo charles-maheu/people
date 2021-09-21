@@ -20,7 +20,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   roslib)
 
-find_package(Boost REQUIRED COMPONENTS signals system thread)
+find_package(Boost REQUIRED COMPONENTS system thread)
 find_package(OpenCV)
 
 include_directories(

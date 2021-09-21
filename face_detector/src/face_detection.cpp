@@ -63,9 +63,10 @@
 #include "sensor_msgs/PointCloud.h"
 #include "geometry_msgs/Point32.h"
 
-#include "opencv/cxcore.hpp"
-#include "opencv/cv.hpp"
-#include "opencv/highgui.h"
+///#include "opencv/cxcore.hpp" Deprecated
+#include <opencv2/opencv.hpp>
+///#include <opencv2/highgui.h>
+///#include <opencv2/imgproc/types_c.h> //may fix CV_HAAR_DO_CANNY_PRUNING problem
 
 #include "face_detector/faces.h"
 
@@ -229,7 +230,7 @@ public:
     if (do_display_)
     {
       // OpenCV: pop up an OpenCV highgui window
-      cv::namedWindow("Face detector: Face Detection", CV_WINDOW_AUTOSIZE);
+      cv::namedWindow("Face detector: Face Detection", cv::WINDOW_AUTOSIZE);
     }
 
     // Init the detector and subscribe to the images and camera parameters. One case for rgbd, one for stereo.

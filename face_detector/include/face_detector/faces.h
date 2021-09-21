@@ -47,9 +47,9 @@
 #include <iostream>
 #include <vector>
 
-#include <opencv/cv.hpp>
-#include <opencv/cxcore.hpp>
-#include <opencv/cvaux.hpp>
+#include <opencv2/opencv.hpp>
+///#include <opencv2/cxcore.hpp> Deprecated
+///#include <opencv2/cvaux.hpp>
 
 #include "image_geometry/stereo_camera_model.h"
 #include "ros/time.h"
